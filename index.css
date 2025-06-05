@@ -1,3 +1,4 @@
+/* === Global Styles === */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -6,6 +7,25 @@ body {
     height: 100vh;
   }
   
+  button {
+    padding: 1rem;
+    background-color: #5a5a5a;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  input[type="text"] {
+    flex: 1;
+    padding: 1rem;
+    background-color: #444;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+  }
+  
+  /* === Layout === */
   .app-layout {
     display: flex;
     height: 100vh;
@@ -19,36 +39,6 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-  }
-  
-  .sidebar h2 {
-    margin-top: 0;
-  }
-  
-  #new-chat {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: #444;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  #chat-history {
-    list-style: none;
-    padding: 0;
-    overflow-y: auto;
-    flex-grow: 1;
-  }
-  
-  #chat-history li {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    background-color: #3a3a3a;
-    border-radius: 4px;
-    cursor: pointer;
   }
   
   .chat-container {
@@ -79,24 +69,69 @@ body {
     border-top: 1px solid #444;
   }
   
-  input[type="text"] {
-    flex: 1;
-    padding: 1rem;
-    background-color: #444;
-    color: white;
-    font-size: 1rem;
-    border: none;
-    outline: none;
+  /* === Sidebar Elements === */
+  .sidebar h2 {
+    margin-top: 0;
   }
   
-  button {
-    padding: 1rem;
-    background-color: #5a5a5a;
-    color: white;
-    border: none;
+  #new-chat {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #444;
+    border-radius: 5px;
+  }
+  
+  #chat-history {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #chat-history li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3a3a3a;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
   }
   
+  .chat-title {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .delete-chat {
+    background: none;
+    border: none;
+    color: #ff6666;
+    font-size: 1rem;
+    cursor: pointer;
+    padding-left: 0.5rem;
+  }
+  
+  /* === Rename Input === */
+  .rename-input {
+    flex-grow: 1;
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* === Chat Bubbles === */
   .message {
     padding: 0.75rem 1rem;
     border-radius: 8px;

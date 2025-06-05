@@ -60,14 +60,63 @@ function saveMessageToHistory(role, text) {
 function renderChatHistory() {
     historyList.innerHTML = '';
     for (const id in chats) {
-      const item = document.createElement('li');
       const chat = chats[id];
-      const title = chat.find(msg => msg.role === 'user')?.text || 'Untitled Chat';
-      item.textContent = title.length > 40 ? title.slice(0, 40) + '...' : title;
-      item.onclick = () => loadChat(id);
+      const titleText = chat.title || chat.find(msg => msg.role === 'user')?.text || 'Untitled Chat';
+  
+      const item = document.createElement('li');
+  
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'chat-title';
+      titleSpan.textContent = titleText.length > 40 ? titleText.slice(0, 40) + '...' : titleText;
+  
+      // 👉 Load chat on click
+      titleSpan.onclick = () => loadChat(id);
+  
+      // ✏️ Rename inline on double-click
+      titleSpan.ondblclick = (e) => {
+        e.stopPropagation();
+  
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = chats[id].title || titleText;
+        input.className = 'rename-input';
+  
+        // Save on blur or Enter
+        input.onblur = saveRename;
+        input.onkeydown = (event) => {
+          if (event.key === 'Enter') input.blur();
+        };
+  
+        function saveRename() {
+          chats[id].title = input.value.trim() || 'Untitled Chat';
+          localStorage.setItem('chats', JSON.stringify(chats));
+          renderChatHistory(); // re-render updated name
+        }
+  
+        item.replaceChild(input, titleSpan);
+        input.focus();
+      };
+  
+      // ❌ Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-chat';
+      deleteBtn.textContent = '-';
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (confirm('Delete this chat?')) {
+          delete chats[id];
+          if (currentChatId === id) startNewChat();
+          localStorage.setItem('chats', JSON.stringify(chats));
+          renderChatHistory();
+        }
+      };
+  
+      item.appendChild(titleSpan);
+      item.appendChild(deleteBtn);
       historyList.appendChild(item);
     }
   }
+  
 
   function loadChat(chatId) {
     currentChatId = chatId;
