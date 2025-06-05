@@ -18,7 +18,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "mistralai/mixtral-8x7b-instruct",  // or another supported model
+          model: "anthropic/claude-3-haiku",
           messages: [
             { role: "system", content: "You are a helpful assistant." },
             { role: "user", content: prompt }
