@@ -42,12 +42,13 @@ function addMessage(role, text) {
 }
 
 function startNewChat() {
-  chatLog.innerHTML = '';
-  currentChatId = Date.now().toString();
-  chats[currentChatId] = [];
-  renderChatHistory();
-}
-
+    chatLog.innerHTML = '';
+    currentChatId = Date.now().toString();
+    chats[currentChatId] = [];
+    localStorage.setItem('currentChatId', currentChatId);
+    renderChatHistory();
+  }
+  
 function saveMessageToHistory(role, text) {
   if (!currentChatId) {
     startNewChat();
@@ -57,26 +58,38 @@ function saveMessageToHistory(role, text) {
 }
 
 function renderChatHistory() {
-  historyList.innerHTML = '';
-  for (const id in chats) {
-    const item = document.createElement('li');
-    const date = new Date(parseInt(id)).toLocaleString();
-    item.textContent = date;
-    item.onclick = () => loadChat(id);
-    historyList.appendChild(item);
+    historyList.innerHTML = '';
+    for (const id in chats) {
+      const item = document.createElement('li');
+      const chat = chats[id];
+      const title = chat.find(msg => msg.role === 'user')?.text || 'Untitled Chat';
+      item.textContent = title.length > 40 ? title.slice(0, 40) + '...' : title;
+      item.onclick = () => loadChat(id);
+      historyList.appendChild(item);
+    }
   }
-}
 
-function loadChat(chatId) {
-  currentChatId = chatId;
-  chatLog.innerHTML = '';
-  chats[chatId].forEach(msg => addMessage(msg.role, msg.text));
-}
+  function loadChat(chatId) {
+    currentChatId = chatId;
+    localStorage.setItem('currentChatId', currentChatId);
+    chatLog.innerHTML = '';
+    chats[chatId].forEach(msg => addMessage(msg.role, msg.text));
+  }
+  
 
-// Load from localStorage on page load
 window.onload = () => {
-  chats = JSON.parse(localStorage.getItem('chats')) || {};
-  renderChatHistory();
-};
+    chats = JSON.parse(localStorage.getItem('chats')) || {};
+    renderChatHistory();
+  
+    // Restore last used chat
+    const storedCurrentId = localStorage.getItem('currentChatId');
+    if (storedCurrentId && chats[storedCurrentId]) {
+      currentChatId = storedCurrentId;
+      loadChat(currentChatId);
+    } else {
+      startNewChat(); // fallback
+    }
+  };
+  
 
 newChatBtn.addEventListener('click', startNewChat);
