@@ -7,15 +7,22 @@
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
-  <div class="chat-container">
-    <header>
-      <h1>GPT Demo</h1>
-    </header>
-    <main id="chat-log"></main>
-    <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
-      <button type="submit">Send</button>
-    </form>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <button id="new-chat">+ New Chat</button>
+      <ul id="chat-history"></ul>
+    </aside>
+
+    <div class="chat-container">
+      <header>
+        <h1>GPT Demo</h1>
+      </header>
+      <main id="chat-log"></main>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
+        <button type="submit">Send</button>
+      </form>
+    </div>
   </div>
 
   <script src="script.js"></script>
